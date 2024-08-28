@@ -103,7 +103,7 @@ class Search:
                 pass
 
         # Strip '!' for "feeling lucky" queries
-        if match := re.search("(^|\s)!($|\s)", q):
+        if match := re.search(r"(^|\s)!($|\s)", q):
             self.feeling_lucky = True
             start, end = match.span()
             self.query = " ".join([seg for seg in [q[:start], q[end:]] if seg])
@@ -112,9 +112,7 @@ class Search:
             self.query = q
 
         # Check for possible widgets
-        self.widget = "ip" if re.search("([^a-z0-9]|^)my *[^a-z0-9] *(ip|internet protocol)" +
-                        "($|( *[^a-z0-9] *(((addres|address|adres|" +
-                        "adress)|a)? *$)))", self.query.lower()) else self.widget
+        self.widget = "ip" if re.search(r"([^a-z0-9]|^)my *[^a-z0-9] *(ip|internet protocol)($|( *[^a-z0-9] *(((addres|address|adres|adress)|a)? *$)))", self.query.lower()) else self.widget
         self.widget = 'calculator' if re.search(
                 r"\bcalculator\b|\bcalc\b|\bcalclator\b|\bmath\b",
                 self.query.lower()) else self.widget
