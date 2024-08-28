@@ -1,4 +1,4 @@
-FROM python:3.11.0a5-alpine as builder
+FROM python:alpine3.19 as builder
 
 RUN apk --update add \
     build-base \
@@ -12,7 +12,7 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --prefix /install --no-warn-script-location --no-cache-dir -r requirements.txt
 
-FROM python:3.11.0a5-alpine
+FROM python:alpine3.19
 
 RUN apk add --update --no-cache tor curl openrc libstdc++
 # git go //for obfs4proxy
@@ -95,7 +95,7 @@ USER $DOCKER_USER:$DOCKER_USER
 
 EXPOSE $EXPOSE_PORT
 
-HEALTHCHECK --interval=30s --timeout=5s \
+HEALTHCHECK --interval=10s --timeout=5s \
   CMD curl -f http://localhost:${EXPOSE_PORT}/healthz || exit 1
 
 CMD misc/tor/start-tor.sh & ./run
